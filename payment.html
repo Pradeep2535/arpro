@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="../payment.css">
+</head>
+
+<body>
+    <div class="checkout-container">
+        <form id="checkout-form">
+            <!-- Billing Section -->
+            <div class="billing-section">
+                <div class=h eader>
+                    <a href='../cart.html'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#ff8a65" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                          </svg>
+                    </a>
+                    <h2>Billing</h2>
+                </div>
+                <div class="coolinput">
+                    <label class="text" for="name">Name</label>
+                    <input type="text" id="name" name="name" class="input">
+                    <div id="name-error" class="error-message"></div>
+                </div>
+                <div class="coolinput">
+                    <label class="text" for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="input">
+                    <div id="email-error" class="error-message"></div>
+                </div>
+                <div class="coolinput">
+                    <label class="text" for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" class="input">
+                    <div id="phone-error" class="error-message"></div>
+                </div>
+            </div>
+
+            <!-- Payment Method Section -->
+            <div class="payment-section">
+                <h2>Payment Method</h2>
+                <div class="payment-option">
+                    <input type="radio" id="paypal" name="payment-method" value="paypal">
+                    <label for="paypal">
+                        <span>PayPal</span>
+                        <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal">
+                    </label>
+                    <p>You will be redirected to the PayPal website after submitting your order</p>
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="credit-card" name="payment-method" value="credit-card">
+                    <label for="credit-card">
+                        <span>Pay with Credit Card</span>
+                        <div class="credit-card-logos">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa">
+                        </div>
+                    </label>
+                    <div id="credit-card-info">
+                        <div class="coolinput">
+                            <label class="text" for="card-number">Card number</label>
+                            <input type="text" id="card-number" name="card-number" class="input">
+                            <div id="card-number-error" class="error-message"></div>
+                        </div>
+                        <div class="coolinput">
+                            <label class="text" for="card-expiry">MM/YY</label>
+                            <input type="text" id="card-expiry" name="card-expiry" class="input">
+                            <div id="card-expiry-error" class="error-message"></div>
+                        </div>
+                        <div class="coolinput">
+                            <label class="text" for="card-cvc">Card Security Code</label>
+                            <input type="text" id="card-cvc" name="card-cvc" class="input">
+                            <div id="card-cvc-error" class="error-message"></div>
+                        </div>
+                        <a href="#">What is this?</a>
+                    </div>
+                </div>
+                <div class="payment-info">
+                    <p>We protect your payment information using encryption to provide bank-level security.</p>
+                </div>
+            </div>
+
+            <!-- Order Review Section -->
+            <div class="order-review-section">
+                <h2>Order Review</h2>
+                <div class="order-item">
+
+                    <img src="https://th.bing.com/th/id/OIP.x-1Rn2BPDZ8QNjTmUbx3QAHaHa?pid=ImgDet&w=200&h=200&c=7&dpr=1.3" alt="Veg-Loaded Pizza">
+                    <div class="item-details">
+                        <p>Frankie</p>
+                        <!-- <div class="quantity-selector">
+                            <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                            <input type="text" class="quantity-input" value="1" readonly>
+                            <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                        </div> -->
+                    </div>
+                    <p class="item-price">₹100.00</p>
+                    <button type="button" class="remove-item-btn" onclick="removeItem(this)">×</button>
+                </div>
+                <div class="order-item">
+                    <img src="https://th.bing.com/th/id/OIP.2QoIkJxfhNslsJrY8k2TfAHaFj?w=235&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Chicken Biryani">
+                    <div class="item-details">
+                        <p>Chapati</p>
+                        <!-- <div class="quantity-selector">
+                            <button type="button" class="quantity-btn" onclick="decreaseQuantity(this)">-</button>
+                            <input type="text" class="quantity-input" value="1" readonly>
+                            <button type="button" class="quantity-btn" onclick="increaseQuantity(this)">+</button>
+                        </div> -->
+                    </div>
+                    <p class="item-price">₹100.00</p>
+                    <button type="button" class="remove-item-btn" onclick="removeItem(this)">×</button>
+                </div>
+                <div class="coolinput">
+                    <label class="text" for="order-comment">Order Comment</label>
+                    <textarea id="order-comment" name="order-comment" class="input" placeholder="Type here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Billing Summary Section -->
+            <div class="billing-summary-section">
+                <h2>Billing Summary</h2>
+                <div class="summary-item">
+                    <p>Subtotal</p>
+                    <p>₹200.00</p>
+                </div>
+                <div class="summary-item">
+                    <p>Discount</p>
+                    <p>-₹0.00</p>
+                </div>
+                <div class="summary-item">
+                    <p>Tax</p>
+                    <p>₹17.00</p>
+                </div>
+                <!-- <div class="summary-item">
+                    <p>Service Charge</p>
+                    <p>₹20.00</p>
+                </div> -->
+                <div class="summary-item grand-total">
+                    <p>Grand Total</p>
+                    <p>₹217.00</p>
+                </div>
+                <p class="inclusive-note">(Inclusive of all Tax)</p>
+                <div class="terms-policy">
+                    <input type="checkbox" id="terms-policy">
+                    <label for="terms-policy">Please check to acknowledge our <a href="#">Privacy & Terms Policy</a></label><br><br><br>
+                    <div id="terms-policy-error" class="error-message"></div>
+                </div>
+                
+              <button  class="pay-btn"><a href="../summa.html">Pay ₹217.00</a></button>
+                
+            </div>
+        </form>
+    </div>
+    <script src="../payment.js"></script>
+</body>
+
+</html>

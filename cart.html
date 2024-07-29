@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Cart</title>
+    <link rel="stylesheet" href="../cart.css">
+</head>
+
+<body>
+    <div class='header-container'>
+        <!--Icon-->
+        <a href='../new1.html'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#ff8a65" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+          </svg>
+        </a>
+        <!--Text'Cart'-->
+        <h1>Cart</h1>
+    </div>
+    <div>
+        <!--Cart Items-->
+        <div id="food-items"></div>
+        <script src="../cart.js"></script>
+
+        <!--Promo Code-->
+        <div class="promo-code">
+            <input type="text" placeholder="  Promo Code">
+            <button class="apply-button">Apply</button>
+        </div>
+        <!--Total-->
+        <div class='item-summary'>
+            <div class='summary-info'>
+                <p>Subtotal</p>
+                <p>Rs. 200.00</p>
+            </div>
+            <hr class='underline'>
+            <div class='summary-info'>
+                <p>Tax and fees</p>
+                <p>Rs. 17.00 .</p>
+            </div>
+            <hr class='underline'>
+            <div class='summary-info'>
+                <p>Total<span> (2 items)</span></p>
+                <p>Rs. 217.00</p>
+            </div>
+            <hr class='underline'>
+        </div>
+    </div>
+    <div>
+        <!--Submit-->
+        <div>
+
+            <a href='../payment.html'>
+                <div class="checkout-button">Checkout</div>
+            </a>
+
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment QR Code</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .center {
+            display: block;
+            margin: 0 auto;
+            width: 50%;
+            max-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .center {
+                width: 80%;
+                max-width: none;
+            }
+        }
+
+        .box {
+            border: none;
+            padding: 10px;
+            background-color: #ff8a65;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        h4 {
+            font-size: 18px;
+            color: #666;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: #fff;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Pay Using This QR Code</h1>
+        <img src="qr-code.jpg" alt="QR code for payment" class="center">
+        <h4>UPI ID: walmart@okicici</h4>
+        <br><br>
+        <div class="box">
+            <h3>Scan the QR code to make a payment</h3>
+        </div>
+    </div>
+</body>
+
+</html>

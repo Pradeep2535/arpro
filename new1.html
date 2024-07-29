@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Models Viewer with Scrollable Buttons</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/2282f5cf42.js" crossorigin="anonymous"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #model-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: auto;
+            /* Ensure pointer events are enabled for the 3D model */
+        }
+        
+        .buttons-container {
+            position: absolute;
+            top: 82%;
+            /* bottom: 20%;  */
+            width: 100%;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px;
+            box-sizing: border-box;
+            z-index: 3;
+            /* Ave the 3D model */
+        }
+        
+        .buttons-container::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+            /* optional: just in case the browser fails to apply the width */
+        }
+        
+        .button {
+            width: 60px;
+            height: 60px;
+            margin: 0 10px;
+            cursor: pointer;
+            color: white;
+            border-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .button:focus {
+            outline: none;
+        }
+        
+        .button span {
+            display: none;
+        }
+        
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        
+        .image-container {
+            background-color: rgb(213, 223, 226);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 5px;
+            box-sizing: border-box;
+            z-index: 3;
+            text-align: center;
+            margin-top: 16px;
+            justify-content: center;
+            gap: 5%;
+            border-radius: 100% 100% 0% 0%;
+        }
+        
+        .minus {
+            margin-top: 6px;
+        }
+        
+        .containers {
+            position: absolute;
+            top: 0;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            text-align: center;
+            box-sizing: border-box;
+            z-index: 3;
+            text-align: center;
+            margin: 2%;
+            margin-left: 90%;
+            justify-content: end;
+            gap: 5%;
+        }
+        
+        .content {
+            background-color: rgb(213, 223, 226);
+            border-radius: 25px;
+            text-align: center;
+            padding: 1%;
+        }
+        /* i {
+    width: 32px;             
+    height: 32px;          
+    padding:2px;  
+    font-size: medium;
+} */
+        /* .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px; 
+    text-align: center;
+    padding: 20px;
+    margin-bottom:0%;
+    
+} */
+        /* .image-container img {
+    border-radius: 50%; 
+    width: 100%;       
+    height: 100%;    
+    object-fit: cover; 
+    border: 2px solid #000; 
+} */
+        
+        .ma {
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border: 2px solid #000;
+        }
+        
+        #smallPage2 {
+            display: none;
+            background-color: white;
+            border-radius: 30px;
+            border: 1px solid black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 40%;
+            bottom: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            text-align: center;
+            height: 70%;
+            width: 70%;
+            overflow-y: auto;
+            z-index: 3;
+        }
+        
+        #smallPage1 {
+            display: none;
+            background-color: white;
+            justify-content: center;
+            border-radius: 30px;
+            border: 1px solid black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 40%;
+            bottom: 45%;
+            place-items: center;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* padding: 10px; */
+            text-align: center;
+            height: 70%;
+            width: 70%;
+            overflow-y: auto;
+            overflow-x: auto;
+            z-index: 3;
+        }
+        
+        #smallPage1::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+            /* optional: just in case the browser fails to apply the width */
+        }
+        
+        .bg-co {
+            padding-top: 8px;
+            justify-content: center;
+            text-align: center;
+            padding-bottom: 8px;
+            padding-right: 8px;
+        }
+        /* Title */
+        
+        #smallPage1 h3 {
+            font-size: 24px;
+        }
+        
+        #smallPage2 h3 {
+            font-size: 24px;
+        }
+        /* Ingredient Items */
+        
+        .row-col {
+            display: flex;
+            flex-direction: column;
+            gap: 5%;
+            height: 30%;
+            /* Let it grow based on content */
+        }
+        /* Each Ingredient Item */
+        
+        .hjhj {
+            font-size: 12px;
+        }
+        
+        font .ingredient-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        /* Image */
+        
+        .image-image {
+            max-width: 50%;
+            max-height: 50%;
+            border-radius: 10px;
+        }
+        /* Description and Button Section */
+        
+        .d-flex {
+            display: flex;
+        }
+        /* Column Layout for Text and Button */
+        
+        .d-flex.flex-column {
+            margin-left: 10px;
+        }
+        /* Input and Button */
+        
+        .promo-code {
+            display: flex;
+            /* margin: 60px 0 20px 0; */
+            align-items: center;
+        }
+        
+        .promo-code input {
+            flex: 1;
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 40px 0 0 40px;
+            outline: none;
+            font-size: 8px;
+            box-sizing: border-box;
+        }
+        
+        .apply-button {
+            background-color: #ff8a65;
+            padding: 4px;
+            border: none;
+            color: #fff;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            font-size: 8px;
+        }
+        
+        .menu {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #000000;
+            width: fit-content;
+            display: flex;
+            list-style: none;
+        }
+        
+        .menu a {
+            text-decoration: none;
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+        }
+        
+        .menu .link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 36px;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .menu .link::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ec920c;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .menu .link svg {
+            width: 14px;
+            height: 14px;
+            fill: #000000;
+            transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .menu .item {
+            position: relative;
+        }
+        
+        .menu .item .submenu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: 100%;
+            border-radius: 0 0 16px 16px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid #cccccc;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-12px);
+            transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 1;
+            pointer-events: none;
+            list-style: none;
+        }
+        
+        .menu .item:hover .submenu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+            border-top: transparent;
+            border-color: #ec920c;
+        }
+        
+        .menu .item:hover .link {
+            color: #ffffff;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .menu .item:hover .link::after {
+            transform: scaleX(1);
+            transform-origin: right;
+        }
+        
+        .menu .item:hover .link svg {
+            fill: #ffffff;
+            transform: rotate(-180deg);
+        }
+        
+        .submenu .submenu-item {
+            width: 100%;
+            transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .submenu .submenu-link {
+            display: block;
+            padding: 12px 24px;
+            width: 100%;
+            position: relative;
+            text-align: center;
+            transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .submenu .submenu-item:last-child .submenu-link {
+            border-bottom: none;
+        }
+        
+        .submenu .submenu-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: scaleX(0);
+            width: 100%;
+            height: 100%;
+            background-color: #afc2c7;
+            z-index: -1;
+            transform-origin: left;
+            transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .submenu .submenu-link:hover:before {
+            transform: scaleX(1);
+            transform-origin: right;
+        }
+        
+        .submenu .submenu-link:hover {
+            color: #ffffff;
+        }
+        
+        .button.highlight {
+            transform: scale(1.2);
+        }
+        
+        #small {
+            margin-top: 10px;
+            width: 0.0001%;
+        }
+        
+        #cart-count {
+            background-color: #ec920c;
+            position: absolute;
+            bottom: 60%;
+            left: 53%;
+            display: flex;
+            white-space: nowrap;
+            box-sizing: border-box;
+            z-index: 3;
+            text-align: center;
+            justify-content: center;
+            border-radius: 50% 50%;
+            width: 15px;
+            height: 15px;
+        }
+        
+        #cartCountCircle {
+            font-size: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        #top-title {
+            background-color: rgb(213, 223, 226);
+            position: absolute;
+            top: 3%;
+            width: 60%;
+            display: flex;
+            padding: 1px;
+            box-sizing: border-box;
+            z-index: 3;
+            text-align: center;
+            justify-content: center;
+            border-radius: 20px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <video autoplay muted playsinline></video>
+    <div id="top-title" style="display: none;">
+        <p id="food-name"></p>
+    </div>
+    <div id="smallPage1">
+        <h3 class="m-4">Ingredients</h3>
+        <div class="row-col">
+            <div class="ingredient-item d-flex flex-row">
+                <img src="https://th.bing.com/th/id/R.e55bdaa86eea8a83d725cfe0d02a80f9?rik=TT6LcOoxbyv3IA&riu=http%3a%2f%2fwww.mastersinhealthcare.com%2fwp-content%2fuploads%2fsalt.jpg&ehk=u4UXsYS7BJZHei5Gb86djUCFlZ7xoUVyz43j%2frAITgs%3d&risl=&pid=ImgRaw&r=0" class="image-image ml-4 mt-2"
+                    alt="Salt" />
+                <div class="d-flex flex-column" id="small">
+                    <h4 class="ml-2 hjhj">Salt</h4>
+                    <div class="promo-code mt-1 ml-2">
+                        <input type="text" placeholder="Quantity">
+                        <button class="apply-button">Send</button>
+                    </div>
+                </div>
+            </div>
+            <div class="ingredient-item d-flex flex-row">
+                <img src="https://th.bing.com/th/id/OIP.BcXb2c0ixnDR-9eSAwjn-AHaE8?w=303&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7" class="image-image img-img ml-4 mt-2" alt="Rice" />
+                <div class="d-flex flex-column" id="small">
+                    <h4 class="ml-2 hjhj">Pepper</h4>
+                    <div class="promo-code mt-1 ml-2">
+                        <input type="text" placeholder="Quantity">
+                        <button class="apply-button">Send</button>
+                    </div>
+                </div>
+            </div>
+            <div class="ingredient-item d-flex flex-row">
+                <img src="https://th.bing.com/th?id=OIP.I1ZHIlCLPW1rX3wJ1P1y4wHaF7&w=279&h=223&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" class="image-image ml-4 mt-2" alt="Vegetable" />
+                <div class="d-flex flex-column" id="small">
+                    <h4 class="ml-2 hjhj">Vegetable</h4>
+                    <div class="promo-code mt-1 ml-2">
+                        <input type="text" placeholder="Quantity">
+                        <button class="apply-button">Send</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="smallPage2">
+        <h3 class="head">CATEGORY</h3>
+        <div class="mt-5 mb-5">
+            <div class="menu-container">
+                <div class="menu">
+                    <div class="item">
+                        <a href="#" class="link">
+                            <span> STARTERS </span>
+                            <svg viewBox="0 0 360 360" xml:space="preserve">
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    id="XMLID_225_"
+                                    d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 
+                                    c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 
+                                    s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+                                ></path>
+                            </g>
+                        </svg>
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Arrow Chicken </a>
+                            </div>
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Dragon Chicken </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="menu-container">
+                <div class="menu">
+                    <div class="item">
+                        <a href="#" class="link">
+                            <span> Tandoori </span>
+                            <svg viewBox="0 0 360 360" xml:space="preserve">
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    id="XMLID_225_"
+                                    d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 
+                                    c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 
+                                    s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+                                ></path>
+                            </g>
+                        </svg>
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Panner Tikka </a>
+                            </div>
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Chicken Tikka </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="menu-container">
+                <div class="menu">
+                    <div class="item">
+                        <a href="#" class="link">
+                            <span> Indian </span>
+                            <svg viewBox="0 0 360 360" xml:space="preserve">
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    id="XMLID_225_"
+                                    d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 
+                                    c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 
+                                    s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+                                ></path>
+                            </g>
+                        </svg>
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Chicken 65 </a>
+                            </div>
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Malabar Chicken </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="menu-container">
+                <div class="menu">
+                    <div class="item">
+                        <a href="#" class="link">
+                            <span> Special Platter </span>
+                            <svg viewBox="0 0 360 360" xml:space="preserve">
+                           <g id="SVGRepo_iconCarrier">
+                                <path
+                                    id="XMLID_225_"
+                                    d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 
+                                    c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 
+                                    s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+                                ></path>
+                            </g>
+                        </svg>
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Mixed Non-Veg PLatter </a>
+                            </div>
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Veg PLatter </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="menu-container">
+                <div class="menu">
+                    <div class="item">
+                        <a href="#" class="link">
+                            <span> BIRIYANI </span>
+                            <svg viewBox="0 0 360 360" xml:space="preserve">
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    id="XMLID_225_"
+                                    d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 
+                                    c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 
+                                    s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+                                ></path>
+                            </g>
+                        </svg>
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Chicken Biriyani </a>
+                            </div>
+                            <div class="submenu-item">
+                                <a href="#" class="submenu-link"> Mutton Biriyani </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="containers">
+        <div class="content">
+            <div class="d-flex flex-column">
+                <div>
+                    <i class="fa-solid fa-magnifying-glass bg-co"></i>
+                </div>
+                <div>
+                    <i class="fa-solid fa-bowl-food bg-co" id="toggleButton1" style="cursor: pointer;"></i>
+
+                </div>
+                <div>
+                    <i class="fa-regular fa-newspaper bg-co" id="toggleButton2" style="cursor: pointer;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="model-container"></div>
+    </div>
+    <div class="buttons-container">
+        <button class="button" id="button1" onclick="handleClick(this.id, 'best_biryani.glb')"></button>
+        <button class="button" id="button2" onclick="handleClick(this.id, 'burger.glb')"></button>
+        <button class="button" id="button3" onclick="handleClick(this.id, 'chapathi.glb')"></button>
+        <button class="button" id="button4" onclick="handleClick(this.id, 'frankie.glb')"></button>
+        <button class="button" id="button5" onclick="handleClick(this.id, 'tiramasu.glb')"></button>
+        <button class="button" id="button6" onclick="handleClick(this.id, 'firiedchicken.glb')"></button>
+        <button class="button" id="button7" onclick="handleClick(this.id, 'model7.glb')"></button>
+        <button class="button" id="button8" onclick="handleClick(this.id, 'model8.glb')"></button>
+        <button class="button" id="button9" onclick="handleClick(this.id, 'Noodles.glb')"></button>
+        <button class="button" id="button10" onclick="handleClick(this.id, 'model10.glb')"></button>
+        <button class="button" id="button11" onclick="handleClick(this.id, 'model11.glb')"></button>
+        <button class="button" id="button12" onclick="handleClick(this.id, 'model12.glb')"></button>
+        <button class="button" id="button13" onclick="handleClick(this.id, 'model13.glb')"></button>
+        <button class="button" id="button14" onclick="handleClick(this.id, 'model14.glb')"></button>
+        <button class="button" id="button15" onclick="handleClick(this.id, 'model15.glb')"></button>
+        <button class="button" id="button16" onclick="handleClick(this.id, 'model16.glb')"></button>
+        <button class="button" id="button17" onclick="handleClick(this.id, 'model17.glb')"></button>
+        <button class="button" id="button18" onclick="handleClick(this.id, 'model18.glb')"></button>
+        <button class="button" id="button19" onclick="handleClick(this.id, 'model19.glb')"></button>
+    </div>
+    <div class="image-container">
+        <a onclick="removeCart()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dash-circle minus" id="remove" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+              </svg>
+        </a>
+        <div class="cartBottom">
+            <div id="cart-count">
+                <p id="cartCountCircle"></p>
+            </div>
+            <a href='../cart.html'><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="black" class="bi bi-cart4" viewBox="0 0 16 16" id="add">
+                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
+              </svg></a>
+        </div>
+        <a onclick="addCart()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle minus" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+              </svg>
+        </a>
+    </div>
+
+    </div>
+
+    <!-- SVG icons here -->
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        let scene, camera, renderer, model, controls;
+
+        function init() {
+            // Scene setup
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                alpha: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0); // Transparent background
+            document.getElementById('model-container').appendChild(renderer.domElement);
+
+            // Camera feed background
+            const video = document.querySelector('video');
+
+            navigator.mediaDevices.getUserMedia({
+                video: true
+            }).then((stream) => {
+                video.srcObject = stream;
+                video.play();
+            });
+
+            // Lighting
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(2, 2, 5).normalize();
+            scene.add(light);
+
+            camera.position.z = 5;
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.25;
+            controls.enableZoom = true; // Enable zoom
+            controls.enablePan = true; // Enable panning
+
+            // Initial model load
+            loadModel('25_6_2024.glb');
+        }
+
+        function loadModel(modelPath) {
+
+
+            if (model) {
+                scene.remove(model);
+            }
+
+            // var dracoLoader = new DRACOLoader();
+            // // Set the path to the DRACO decoder  
+            // dracoLoader.setDecoderPath('briyani.glb');
+
+            const loader = new THREE.GLTFLoader();
+
+            loader.load(modelPath, (gltf) => {
+                model = gltf.scene;
+                model.position.set(0, 0, 0); // Center the model
+                model.scale.set(1, 1, 1); // Adjust the scale if needed
+                scene.add(model);
+                render();
+            }, undefined, (error) => {
+                console.error('An error occurred while loading the model:', error);
+            });
+        }
+
+
+
+        // const gltfLoader = new THREE.GLTFLoader();
+        // gltfLoader.setDRACOLoader(dracoLoader);
+
+        // Now load your model  
+        // gltfLoader.load('path/to/your/model.gltf', function(gltf) {
+        //     scene.add(gltf.scene);
+        // }, undefined, function(error) {
+        //     console.error(error);
+        // });
+
+
+        function handleClick(buttonId, model) {
+            // Remove outline class from all buttons
+
+            foodName(model);
+            // Add outline class to the clicked button
+            var buttons = document.querySelectorAll('.button');
+            buttons.forEach(function(btn) {
+                btn.style.outline = 'none';
+            });
+
+            // Add inline style to the clicked button
+            var button = document.getElementById(buttonId);
+            button.style.outline = '3px solid orange';
+
+
+            // Load the model
+            loadModel(model);
+        }
+
+
+        function render() {
+            requestAnimationFrame(render);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let toggleButton1 = document.getElementById('toggleButton1');
+            let imageBtn = document.getElementById("ImageEle");
+            let smallPage1 = document.getElementById('smallPage1');
+            let toggleButton2 = document.getElementById('toggleButton2');
+            let smallPage2 = document.getElementById('smallPage2');
+
+            // Toggle smallPage1 visibility and hide smallPage2 and imageBtn
+            toggleButton1.addEventListener('click', function() {
+                smallPage1.style.display = (smallPage1.style.display === 'block') ? 'none' : 'block';
+                smallPage2.style.display = 'none';
+                imageBtn.style.display = 'none';
+            });
+
+            // Toggle smallPage2 visibility and hide smallPage1 and imageBtn
+            toggleButton2.addEventListener('click', function() {
+                smallPage2.style.display = (smallPage2.style.display === 'block') ? 'none' : 'block';
+                smallPage1.style.display = 'none';
+                imageBtn.style.display = 'none';
+            });
+        });
+
+        let cartCount = 0;
+        document.getElementById("cartCountCircle").textContent = cartCount;
+
+        function addCart() {
+            if (cartCount <= 10) {
+                cartCount += 1;
+                document.getElementById("cartCountCircle").textContent = cartCount;
+            }
+
+        }
+
+        function removeCart() {
+            if (cartCount >= 1) {
+                cartCount -= 1
+                document.getElementById("cartCountCircle").textContent = cartCount;
+            }
+        }
+
+
+        function foodName(foodName) {
+            document.getElementById("top-title").style.display = "block";
+            let n = '';
+            for (let i = 0; i < foodName.length - 4; i++) {
+                n += foodName[i];
+            }
+            document.getElementById("food-name").textContent = "Rs. 100  -  " + n;
+            document.getElementById("food-name").style.color = "#000";
+        }
+    </script>
+</body>
+
+</html>
