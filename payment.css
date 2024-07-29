@@ -202,7 +202,7 @@ input[type="radio"] {
     justify-content: center;
     text-align: center;
     padding: 10px;
-    background-color: #ff6f61;
+    background-color: #ff8a65;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -211,7 +211,7 @@ input[type="radio"] {
 }
 .pay-btn a{
     text-decoration: none;
-    color: #000000;
+    color: #fff;
     font-weight: bold;
     
 }
