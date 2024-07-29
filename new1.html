@@ -765,7 +765,7 @@
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: { ideal: "environment" } // Use 'environment' for back camera
+            facingMode: { exact: "environment" } // Use 'environment' for back camera
           }
         })
         .then(function(stream) {
