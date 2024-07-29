@@ -1,6 +1,6 @@
 const foodItems = [
-    { name: 'Ramen bowl', price: 100.00, count: 1, web: "https://th.bing.com/th/id/OIP.x-1Rn2BPDZ8QNjTmUbx3QAHaHa?pid=ImgDet&w=200&h=200&c=7&dpr=1.3" },
-    { name: 'Chapati', price: 100.00, count: 1, web: "https://th.bing.com/th/id/OIP.2QoIkJxfhNslsJrY8k2TfAHaFj?w=235&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+    { name: 'Ramen bowl', price: 'Rs. 100.00', count: 1, web: "https://th.bing.com/th/id/OIP.x-1Rn2BPDZ8QNjTmUbx3QAHaHa?pid=ImgDet&w=200&h=200&c=7&dpr=1.3" },
+    { name: 'Chapati', price: 'Rs. 100.00', count: 1, web: "https://th.bing.com/th/id/OIP.2QoIkJxfhNslsJrY8k2TfAHaFj?w=235&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
 
 ];
 
@@ -16,7 +16,7 @@ function renderFoodItems() {
             <img src=${item.web} alt="${item.name}">
             <div class="item-info">
                 <h2>${item.name}</h2>
-                <p>$${(item.price * item.count).toFixed(2)}</p>
+                <p>${(item.price * item.count).toFixed(2)}</p>
             </div>
             <div class="item-third">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16" onclick="removeItem(${index})">
